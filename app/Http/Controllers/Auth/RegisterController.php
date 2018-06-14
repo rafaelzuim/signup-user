@@ -54,7 +54,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:5|confirmed',
         ]);
     }
 
@@ -82,7 +82,7 @@ class RegisterController extends Controller
     }
     public function verify($token)
     {
-        $user = User::where('email_token?', $token)->first();
+        $user = User::where('email_token', $token)->first();
         $user->verified = 1;
         if ($user->save()) {
             return view('emailconfirm', ['user' => $user]);
