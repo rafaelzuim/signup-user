@@ -9,6 +9,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    CONST VERIFIED = 1;
+
     /**
      * The attributes that are mass assignable.
      *

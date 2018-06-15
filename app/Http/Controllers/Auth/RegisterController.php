@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Jobs\SendVerificationEmail;
+
 
 class RegisterController extends Controller
 {
@@ -25,6 +27,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+
 
 
     /**
@@ -75,6 +78,11 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        $user = User::where([['email','=',request('email')],['verified','=',User::VERIFIED]])->first();
+        // if user previously get registered, login him
+        if($user){
+            Auth::login($user);
+        }
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
         dispatch(new SendVerificationEmail($user));
