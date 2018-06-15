@@ -78,10 +78,9 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $user = User::where([['email','=',request('email')],['verified','=',User::VERIFIED]])->first();
-        // if user previously get registered, login him
-        if($user){
-            Auth::login($user);
+        // if users already register, set it up
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password'), 'verified' => 1])) {
+            return redirect()->intended('home');
         }
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));

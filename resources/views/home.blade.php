@@ -14,6 +14,16 @@
                         </div>
                     @endif
 
+                    <p>User ID: <strong>{{ Auth::user()->id }}</strong> </p>
+                    <p>E-mail: <strong>{{ Auth::user()->email }}</strong> </p>
+                    <p>User Status: <strong>{{ Auth::user()->verified ? 'Activated' : 'Pending' }}</strong> </p>
+                    <p>
+                        <button class="btn btn-warning"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </button>
+                    </p>
                 </div>
             </div>
         </div>
